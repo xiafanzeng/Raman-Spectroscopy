@@ -1,0 +1,8 @@
+numpy
+pywt
+peakutils
+scipy
+rampy
+lmfit
+matplotlib
+PyWavelets
