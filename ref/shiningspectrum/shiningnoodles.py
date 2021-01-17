@@ -18,6 +18,7 @@ import math
 from multiprocessing import  Manager, Pool
 import time
 from shiningspectrum import peak_processing
+from . import spectrafit
 
 # ————————————————————————————————————————————————————————————
 def clean_spectra(compound):

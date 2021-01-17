@@ -6,3 +6,5 @@ rampy
 lmfit
 matplotlib
 PyWavelets
+flask
+flask_api
