@@ -1,6 +1,8 @@
 import json, time 
 from flask import Flask, request, jsonify
 from flask_api import status
+import os
+from pathlib import Path
 
 app = Flask(__name__)
 
@@ -65,6 +67,9 @@ def internal_server_error(error):
 @app.route('/sepctrums', methods=['GET'])
 def get_all_sepctrums():
     # select all
+    # data_dir = Path('./data')
+    # for filename in data_dir.iter():
+    #     s = read_spectrum(filename, database_name)
     
     return 'all spectrums'
 

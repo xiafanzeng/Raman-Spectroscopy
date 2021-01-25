@@ -41,7 +41,7 @@ data = json.load(data)
 x = data['x']
 y = data['y']
 
-smoothed = requests.post('api.sitraman.com/v1/processing/smooth', data=data)
+smoothed = requests.post('https://api.sitraman.com/v1/processing/smooth', data=data)
 ```
 
 ## Caching
@@ -62,15 +62,40 @@ Detailed info about spectrum
 
 -   Get all spectrum : `GET /sepctrums`
 
+> request
+> GET https://api.sitraman.com/v1/sepctrums
+
+> response
+
+```json
+{
+  "res" :[
+    {
+    "data": {
+      "x": [
+        -89.568, -86.697, -83.828, -80.96, -78.095, -75.232, -72.37, -69.511, -66.654, -63.798
+        ...
+      ],
+      "y":[
+        -1.51, 2.52, 1.51, 5.54, 6.55, 11.58, 6.55, 11.58, 6.55, 13.6
+        ...
+      ],
+      "name": "Trichloromethane",
+      "CAS": "67-66-3",
+      ...
+    },
+    ...
+  }]
+  ...
+}
+```
+
 -   Get one spectrum: `GET /spectrum/:id`
 
--   Query spectrum: `GET /spectrum/query`
+> request
+> GET https://api.sitraman.com/v1/sepctrums/BV1w7411c7xk
 
--   🔒 Create a spectrum: `POST /spectrum`
-
--   🔒 Update a spectrum: `PUT /spectrum/:id`
-
--   🔒 Delete a spectrum: `DELETE /spectrum/:id`
+> response
 
 ```json
 {
@@ -85,10 +110,89 @@ Detailed info about spectrum
     ],
     "name": "Trichloromethane",
     "CAS": "67-66-3",
+    "id": "BV1w7411c7xk",
     ...
   }
 }
 ```
+
+-   Query spectrum: `GET /spectrum/query`
+
+-   🔒 Create a spectrum: `POST /spectrum`
+
+> request
+> POST https://api.sitraman.com/v1/sepctrums
+
+```json
+// form-data
+{
+  "data": {
+    "x": [
+      -89.568, -86.697, -83.828, -80.96, -78.095, -75.232, -72.37, -69.511, -66.654, -63.798
+      ...
+    ],
+    "y":[
+      -1.51, 2.52, 1.51, 5.54, 6.55, 11.58, 6.55, 11.58, 6.55, 13.6
+      ...
+    ],
+    "name": "Trichloromethane",
+    "CAS": "67-66-3",
+    ...
+  }
+```
+
+> response
+
+```json
+{
+    "data": "入库成功"
+}
+```
+
+-   🔒 Update a spectrum: `PUT /spectrum/:id`
+
+> request
+> PUT https://api.sitraman.com/v1/sepctrums/BV1w7411c7xk
+
+```json
+// form-data
+{
+  "data": {
+    "x": [
+      -89.568, -86.697, -83.828, -80.96, -78.095, -75.232, -72.37, -69.511, -66.654, -63.798
+      ...
+    ],
+    "y":[
+      -1.51, 2.52, 1.51, 5.54, 6.55, 11.58, 6.55, 11.58, 6.55, 13.6
+      ...
+    ],
+    "name": "Trichloromethane",
+    "CAS": "67-66-3",
+    ...
+  }
+```
+
+> response
+
+```json
+{
+    "data": "更新成功"
+}
+```
+
+-   🔒 Delete a spectrum: `DELETE /spectrum/:id`
+
+> request
+> DELETE https://api.sitraman.com/v1/sepctrums/BV1w7411c7xk
+
+> response
+
+```json
+{
+  "data": "成功删除“
+}
+```
+
 
 ### Processing
 
