@@ -86,7 +86,7 @@ _rod_related_entry.code
 _rod_related_entry.database
 _rod_related_entry.uri
 _rod_related_entry.description
-1 1544332 COD http://www.crystallography.net/cod/1544332.html
+#1 1544332 COD http://www.crystallography.net/cod/1544332.html
 ;
 no XRD analysis data.
 ;
