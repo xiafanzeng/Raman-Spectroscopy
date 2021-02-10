@@ -1,7 +1,8 @@
 """Application routes."""
 from operator import itemgetter
 from datetime import datetime as dt
-
+import pandas as pd 
+import numpy as np
 import json
 
 from flask import current_app as app
@@ -10,6 +11,7 @@ from flask_api import status
 
 from .models import User, db, Spectrum
 
+from . import classification
 
 @app.route("/", methods=["GET"])
 def user_records():
@@ -34,7 +36,6 @@ def user_records():
         db.session.commit()  # Commits all changes
         redirect(url_for("user_records"))
     return render_template("users.jinja2", users=User.query.all(), title="Show Users")
-
 
 # exceptions
 @app.errorhandler(Exception)
@@ -127,7 +128,6 @@ def get_all_spectrums():
     return jsonify(status=200, message=json.dumps(spectrums))
     # return 'all spectrums'
 
-# uuid
 @app.route('/spectrum/<id>', methods=['GET'])
 def get_one_spectrum(id):
     # selcet * from raman where id={id}
@@ -136,21 +136,23 @@ def get_one_spectrum(id):
         return jsonify(status=200, message=exist_spectrum.__repr__())
     else: return not_found('')
 
-# name cas
+
 @app.route('/spectrum/query', methods=['GET'])
 def query_spectrums():
     # options to query
-    if not request.args: return f'empty opts'
-    all_opts = {'num_page', 'total'} # ... 
-    opts = all_opts and request.args
-    
-    if not opts: return f'Invalid query opts'
-    
-    args = {}
-    for opt in opts:
-        args[opt] = request.args[opt]
+    if not request.args: return bad_request('no query exist')
+    # arg set
+    name = cas = ''
+    if 'name' in request.args: name = request.args['name']
+    if 'cas' in request.args: cas = request.args['cas']
+        
+    exist_spectrum = Spectrum.query.filter(
+        Spectrum.name == name or Spectrum.cas == cas
+        ).all()
+    if exist_spectrum: 
+        return jsonify(status=200, message=exist_spectrum.__repr__())
+    else: return not_found('')
 
-    return f'query {args}' 
 
 @app.route('/spectrum/<id>', methods=['PUT'])
 def update_one_spectrum(id):
@@ -165,7 +167,7 @@ def update_one_spectrum(id):
         exist_spectrum.data = data 
         db.session.commit()
         return jsonify(status=200, message='updated')
-    else: not_found('')
+    else: return not_found('')
 
 @app.route('/spectrum/<id>', methods=['DELETE'])
 def delete_one_spectrum(id):
@@ -181,5 +183,29 @@ def delete_one_spectrum(id):
 def classify_spectrum():
     spectrum = request.get_json()
     data = itemgetter('data')(spectrum)
-    return ''
+    method = ''
+    if 'method' in spectrum: method = spectrum['method']
     
+    spectrums = Spectrum.query.all()
+    if method == '':
+        all_spectrums = {}
+        for s in spectrums:
+            _s = json.loads(s.data.replace("'", '"'))
+            all_spectrums[s.name] = [_s['x'], _s['y']]
+        result = classification.classify(data['x'], data['y'], all_spectrums)    
+        
+    
+    X, Y = [], []
+    for s in spectrums:
+        _s = json.loads(s.data.replace("'", '"'))
+        X.append(_s['y'])
+        Y.append(s.name)
+    X = pd.DataFrame(X)
+    sample = np.array(data['y'])[None, :]
+    
+    if method == 'rf':
+        result = classification.rf_clf(sample, (X, Y))
+    elif method == 'boosting':
+        result = classification.gbt_clf(sample, (X, Y))
+    else: method_not_supported('')
+    return jsonify(status=200, message=result)
