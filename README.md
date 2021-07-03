@@ -224,3 +224,8 @@ Detailed info about clasification
 > reload
 
 `export FLASK_ENV=development`
+
+
+荧光 
+
+基于已知光谱 - 背景 

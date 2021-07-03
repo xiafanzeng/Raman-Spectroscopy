@@ -1,4 +1,7 @@
 __pycache__/
+node_modules
+
+
 .ipynb_checkpoints
 checkpoint
 .DS_Store

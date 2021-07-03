@@ -6,14 +6,14 @@ import numpy as np
 import json
 
 from flask import current_app as app
-from flask import make_response, redirect, render_template, request, url_for, jsonify
+from flask import make_response, redirect, render_template, request, url_for, jsonify, send_from_directory
 from flask_api import status
 
 from .models import User, db, Spectrum
 
 from . import classification
 
-@app.route("/", methods=["GET"])
+@app.route("/user", methods=["GET"])
 def user_records():
     """Create a user via query string parameters."""
     username = request.args.get("user")
@@ -95,22 +95,27 @@ def internal_server_error(error):
 
 
 # apis
+@app.route('/', methods=['GET'])
+def index():  
+    return send_from_directory('public', 'index.html')
+
 @app.route('/spectrum', methods=['POST'])
 def create_one_spectrum():
     # create operation
     req = request.get_json()
-    name, cas, data = itemgetter('name', 'cas', 'data')(req)
-    
+    name, data = itemgetter('name', 'data')(req)
+    print(name)
     if 'x' in data and 'y' in data and data['x'] and data['y']:
         existing_spectrum = Spectrum.query.filter(
             Spectrum.data == data 
+            # Spectrum.name == name 
         ).first()
-        if existing_spectrum: return make_response(f"{name} ({cas}) already created!")
+        if existing_spectrum: return make_response(f"{name} already created!")
         new_spectrum = Spectrum(
             name=name,
-            cas=cas,
             created=dt.now(),
-            data=data,
+            data=data
+            # **req
         )
         db.session.add(new_spectrum)
         db.session.commit()
