@@ -11,7 +11,7 @@ from flask_api import status
 
 from .models import User, db, Spectrum
 
-from . import classification
+from .classification import random_forest, boosting, feat_peak, siamese
 
 @app.route("/user", methods=["GET"])
 def user_records():
@@ -127,9 +127,9 @@ def get_all_spectrums():
     # select all
     spectrums = Spectrum.query.all()
     for i, spectrum in enumerate(spectrums):
-        print(type(spectrums[i]))
+        # print(type(spectrums[i]))
         spectrums[i] = spectrum.__repr__()
-        print(type(spectrums[i]))
+        # print(type(spectrums[i]))
     return jsonify(status=200, message=json.dumps(spectrums))
     # return 'all spectrums'
 
@@ -146,18 +146,18 @@ def get_one_spectrum(id):
 def query_spectrums():
     # options to query
     if not request.args: return bad_request('no query exist')
+    
     # arg set
-    name = cas = ''
-    if 'name' in request.args: name = request.args['name']
-    if 'cas' in request.args: cas = request.args['cas']
+    exist_spectrums = set()
+    for key in request.args.keys():
+        exist_spectrum = Spectrum.query.filter(
+            getattr(Spectrum, key) == request.args[key]
+            ).all()
+        for spectrum in exist_spectrum: exist_spectrums.add(spectrum)
         
-    exist_spectrum = Spectrum.query.filter(
-        Spectrum.name == name or Spectrum.cas == cas
-        ).all()
-    if exist_spectrum: 
-        return jsonify(status=200, message=exist_spectrum.__repr__())
+    if len(exist_spectrums): 
+        return jsonify(status=200, message=exist_spectrums.__repr__())
     else: return not_found('')
-
 
 @app.route('/spectrum/<id>', methods=['PUT'])
 def update_one_spectrum(id):
@@ -187,19 +187,24 @@ def delete_one_spectrum(id):
 @app.route('/spectrum/classification', methods=['POST'])
 def classify_spectrum():
     spectrum = request.get_json()
+    
+    # unknow
     data = itemgetter('data')(spectrum)
     method = ''
     if 'method' in spectrum: method = spectrum['method']
     
+    # known 
     spectrums = Spectrum.query.all()
-    if method == '':
+    
+    # 默认方法
+    if not method or method == '':
         all_spectrums = {}
         for s in spectrums:
             _s = json.loads(s.data.replace("'", '"'))
             all_spectrums[s.name] = [_s['x'], _s['y']]
-        result = classification.classify(data['x'], data['y'], all_spectrums)    
+        result = feat_peak.classify(data['x'], data['y'], all_spectrums)
         
-    
+    # load known spectrum data
     X, Y = [], []
     for s in spectrums:
         _s = json.loads(s.data.replace("'", '"'))
@@ -209,8 +214,11 @@ def classify_spectrum():
     sample = np.array(data['y'])[None, :]
     
     if method == 'rf':
-        result = classification.rf_clf(sample, (X, Y))
+        result = random_forest.rf_clf(sample, (X, Y))
+        
     elif method == 'boosting':
-        result = classification.gbt_clf(sample, (X, Y))
+        result = boosting.gbt_clf(sample, (X, Y))
+        
     else: method_not_supported('')
+    
     return jsonify(status=200, message=result)

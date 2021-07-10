@@ -62,20 +62,3 @@ def classify(x_data, y_data, all_spectrum):
     # print(compare_result)
     return compare_result
     compare_result=judge_matter(compare_result)
-
-
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.ensemble import GradientBoostingClassifier
-
-def rf_clf(sample, data):   
-    clf = RandomForestClassifier(n_estimators=10)
-    clf.fit(data[0], data[1])
-    return clf.predict(sample)[0]
-    return 'rf clf'
-
-def gbt_clf(sample, data):
-    clf = GradientBoostingClassifier(n_estimators=100, learning_rate=1.0,
-        max_depth=1, random_state=0)
-    clf.fit(data[0], data[1])
-    return clf.predict(sample)[0]
-    return 'boosting clf'
