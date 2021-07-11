@@ -1,4 +1,7 @@
 __pycache__/
+node_modules
+
+run.sh
 .ipynb_checkpoints
 checkpoint
 .DS_Store
@@ -19,6 +22,7 @@ _mailinglist
 .idea/
 docs/_build/
 .vscode
+.venv
 
 # Coverage reports
 htmlcov/

@@ -56,6 +56,7 @@ plt.legend()
 all_spectrum = database.read_all("raman_database")
 
 # 将光谱数据格式转为noodles可以识别的数据格式
+
 list_of_compounds = shiningnoodles.shining2noodles(all_spectrum)
 
 
@@ -72,10 +73,11 @@ x_data, y_data, y_base = pretreatment.autbaseline(unknown_x, unknown_y, deg=4, m
 unknow_compound = {"title":"unkonw","x":x_data,"y":y_data}
 
 #调用component_testing类，此步可对一些参数进行定义，也可以使用默认参数，详情可以使用help(shiningnoodles.component_testing)查看可自定义的参数。
-A = shiningnoodles.component_testing(peak_algorithm="shining")
+A = shiningnoodles.component_testing()
 
 #print("准备启动多进程")
 #开始识别
+# import ipdb; ipdb.set_trace()
 unkonw_peak_center, unknown_peak_assignments, percentages = A.peak_assignment(unknow_compound, list_of_compounds)
 #jupyter中，子进程内的print会无法输出，实际运行时可以查看cmd窗口(或jupyter启动时那个小黑窗口)，
 #里面会有子进程内的输出内容，主要是一些进程号、子进程耗时等信息，重要信息最后都会返回主进程。
@@ -246,5 +248,5 @@ plt.ylabel('Counts', fontsize=12)
 plt.ylim(unknown_y.min(), unknown_y.max())
 plt.xlim(unknown_x.min(), unknown_x.max())
 plt.title(title_s)
-plt.show()
+# plt.show()
 print(percentages)
