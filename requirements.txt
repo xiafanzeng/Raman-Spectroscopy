@@ -7,7 +7,6 @@ itsdangerous==1.1.0; python_version >= "2.7" and python_full_version < "3.0.0" o
 jinja2==2.11.2; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0"
 markupsafe==1.1.1; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0"
 protobuf==3.14.0; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0"
-pymysql==0.10.1
 python-dotenv==0.14.0
 six==1.15.0; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0"
 sortedcontainers==2.3.0; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0"
@@ -22,4 +21,5 @@ flask_api==2.0
 numpy
 pandas
 sklearn
+mysqlclient
 pymysql
