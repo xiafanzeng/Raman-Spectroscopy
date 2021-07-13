@@ -21,5 +21,4 @@ flask_api==2.0
 numpy
 pandas
 sklearn
-mysqlclient
 pymysql
