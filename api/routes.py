@@ -107,14 +107,14 @@ def create_one_spectrum():
     print(name)
     if 'x' in data and 'y' in data and data['x'] and data['y']:
         existing_spectrum = Spectrum.query.filter(
-            Spectrum.data == data 
+            Spectrum.data == f'{data}'
             # Spectrum.name == name 
         ).first()
         if existing_spectrum: return make_response(f"{name} already created!")
         new_spectrum = Spectrum(
             name=name,
             created=dt.now(),
-            data=data
+            data=f'{data}'
             # **req
         )
         db.session.add(new_spectrum)
@@ -169,7 +169,7 @@ def update_one_spectrum(id):
     if exist_spectrum: 
         exist_spectrum.name = name 
         exist_spectrum.cas = cas 
-        exist_spectrum.data = data 
+        exist_spectrum.data = f'{data}'
         db.session.commit()
         return jsonify(status=200, message='updated')
     else: return not_found('')
@@ -189,7 +189,7 @@ def classify_spectrum():
     spectrum = request.get_json()
     
     # unknow
-    data = itemgetter('data')(spectrum)
+    data = f'{itemgetter('data')(spectrum)}'
     method = ''
     if 'method' in spectrum: method = spectrum['method']
     
