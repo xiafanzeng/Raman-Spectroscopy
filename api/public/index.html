@@ -49,6 +49,8 @@
               <button type="submit" class="btn btn-primary" id="retrieve-btn">
                 create
               </button>
+              <!--添加一个文本框用来输入光谱号，根据光谱编号进行更新-->
+              <input type="text" value="" id="spectrum_id" placeholder="Please enter spectrum id"/>
               <button type="submit" class="btn btn-danger" id="update-btn">
                 update
               </button>
@@ -69,7 +71,7 @@
     </div>
     <!-- form div -->
   </div>
-  
+
   <!-- container -->
   <script>
     var spectrums = [];
@@ -95,6 +97,7 @@
               legend: {
               },
               xAxis: {
+                minInterval:500,
                 data: spectrums[0].data.x
               },
               yAxis: {
@@ -121,6 +124,23 @@
         console.log(spectrum);
         // spectrum.cas='123'
         axios.post('/spectrum', spectrum)
+      }
+    });
+
+
+    //update点击事件
+    var uptate = document.getElementById('update-btn')
+    uptate.addEventListener('click', e => {
+      var oinput=document.getElementById('spectrum_id');
+      var spectrum_id=oinput.value;
+      for(let spectrum of spectrums){
+        console.log(spectrum);
+        if(window.confirm("update spectrum "+spectrum_id+"?")){
+          axios.put('/spectrum/'+spectrum_id, spectrum);
+          return true;
+        }else{
+          return false;
+        }
       }
     });
 
@@ -171,7 +191,7 @@
     // graph
     var myChart = echarts.init(document.getElementById('echarts'));
 
-    // var 
+    // var
     // myChart.setOption(option);
     function drawChart(option) {
       myChart.setOption(option);
