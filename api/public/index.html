@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="">
 
 <head>
   <title>SitRaman system</title>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <!-- <link rel="stylesheet" href="static/css/blue_bootstrap.min.css" /> -->
   <!-- <script type="text/javascript" src="static/js/jquery-3.1.1.min.js"></script> -->
   <!-- <script type="text/javascript" src="static/js/rest_api.js"></script> -->
@@ -14,188 +14,200 @@
 </head>
 
 <body>
-  <div class="container">
-    <div class="page-header">
-      <h1>SitRaman</h1>
-    </div>
+<div class="container">
+  <div class="page-header">
+    <h1>SitRaman</h1>
+  </div>
 
-    <!-- Flash Message -->
-    <div class="table-responsive">
-      <table class="table">
-        <tr>
-          <td>Status:</td>
-          <td><span id="flash_message"></span></td>
-        </tr>
-      </table>
-    </div>
+  <!-- Flash Message -->
+  <div class="table-responsive">
+    <table class="table">
+      <tr>
+        <td>Status:</td>
+        <td><span id="flash_message"></span></td>
+      </tr>
+    </table>
+  </div>
 
-    <div class="col-md-12" id="form_data">
-      Create, Update, Classification and Delete :
-      <div class="well">
-        <div class="form-horizontal">
-          <div class="form-group">
-            <label class="control-label col-sm-2" for="wishlist_id">请输入物质名称的CAS号：</label>
-            <div class="col-sm-6">
-              <input type="text" class="form-control" id="wishlist_id" placeholder="Enter ID of CAS" />
-              <button type="submit" class="btn btn-primary" id="query-btn">
-                query
-              </button>
-            </div>
+  <div class="col-md-12" id="form_data">
+    Create, Update, Classification and Delete :
+    <div class="well">
+      <div class="form-horizontal">
+        <div class="form-group">
+          <label class="control-label col-sm-2" for="wishlist_id">请输入物质名称的CAS号：</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" id="wishlist_id"
+                   placeholder="Enter ID of CAS"/>
+            <button type="submit" class="btn btn-primary" id="query-btn">
+              query
+            </button>
+          </div>
 
-            <input type="file" class="btn btn-primary" id="file-loader" multiple>
+          <input type="file" class="btn btn-primary" id="file-loader" multiple>
 
-            </input>
-            <div class="col-sm-4">
-              <button type="submit" class="btn btn-primary" id="retrieve-btn">
-                create
-              </button>
-              <!--添加一个文本框用来输入光谱号，根据光谱编号进行更新-->
-              <input type="text" value="" id="spectrum_id" placeholder="Please enter spectrum id"/>
-              <button type="submit" class="btn btn-danger" id="update-btn">
-                update
-              </button>
-              <button type="button" class="btn btn-light" id="delete-btn">
-                delete
-              </button>
-              <button type="button" class="btn btn-primary" id="item-classify-btn">
-                classification
-              </button>
-            </div>
-            <div class="graph">
-              <h4>graph</h4>
-              <div id="echarts" style="height: 300px; width: 300px;"></div>
-            </div>
+          </input>
+          <div class="col-sm-4">
+            <button type="submit" class="btn btn-primary" id="retrieve-btn">
+              create
+            </button>
+            <!--添加一个文本框用来输入光谱号，根据光谱编号进行更新-->
+            <input type="text" value="" id="spectrum_id"
+                   placeholder="Please enter spectrum id"/>
+            <button type="submit" class="btn btn-danger" id="update-btn">
+              update
+            </button>
+            <button type="button" class="btn btn-light" id="delete-btn">
+              delete
+            </button>
+            <button type="button" class="btn btn-primary" id="item-classify-btn">
+              classification
+            </button>
+          </div>
+          <div class="graph">
+            <h4>graph</h4>
+            <div id="echarts" style="height: 300px; width: 300px;" ></div>
           </div>
         </div>
       </div>
     </div>
-    <!-- form div -->
   </div>
+  <!-- form div -->
+</div>
 
-  <!-- container -->
-  <script>
-    var spectrums = [];
-    var fileLoader = document.getElementById("file-loader");
-    fileLoader.addEventListener("change", (event) => {
-      const files = event.target.files;
-      for (var i = 0, f; f = files[i]; i++) {
-        var reader = new FileReader();
-        reader.onload = (function (theFile) {
-          return function (e) {
-            var span = document.createElement('span');
-            let spectrum = e.target.result
-            // span.innerHTML = ['<img class="thumb" src="', e.target.result,
-            //                 '" title="', escape(theFile.name), '"/>'].join('');
-            spectrum = loadSpectrum(spectrum)
-            spectrums.push(spectrum)
-            console.log(spectrum);
-            const option = {
-              title: {
-                text: spectrums[0].name
-              },
-              tooltip: {},
-              legend: {
-              },
-              xAxis: {
-                data: spectrums[0].data.x
-              },
-              yAxis: {
-                data: spectrums[0].data.y
-              },
-              series: [{
-                // name: 'asd',
-                // type: 'bar',
-                type: 'line',
-                data: spectrums[0].data.y
-              }]
-            }
-            drawChart(option)
+<!-- container -->
+<script>
+  var spectrums = [];
+  var fileLoader = document.getElementById("file-loader");
+  fileLoader.addEventListener("change", (event) => {
+    const files = event.target.files;
+    for (var i = 0, f; f = files[i]; i++) {
+      var reader = new FileReader();
+      reader.onload = (function (theFile) {
+        return function (e) {
+          var span = document.createElement('span');
+          let spectrum = e.target.result;
+          // span.innerHTML = ['<img class="thumb" src="', e.target.result,
+          //                 '" title="', escape(theFile.name), '"/>'].join('');
+          spectrum = loadSpectrum(spectrum);
+          spectrums.push(spectrum);
+          console.log(spectrum);
+          const option = {
+            title: {
+              text: spectrums[0].name
+            },
+            tooltip: {},
+            legend: {},
+            xAxis: {
+              minInterval: 500,
+              data: spectrums[0].data.x
+            },
+            yAxis: {
+              data: spectrums[0].data.y
+            },
+            series: [{
+              // name: 'asd',
+              // type: 'bar',
+              type: 'line',
+              data: spectrums[0].data.y
+            }]
           };
-        })(f);
-        reader.readAsText(f);
-      }
-
-    })
-
-    var create = document.getElementById('retrieve-btn')
-    create.addEventListener('click', e => {
-      for(let spectrum of spectrums){
-        console.log(spectrum);
-        // spectrum.cas='123'
-        axios.post('/spectrum', spectrum)
-      }
-    });
-
-
-    //update点击事件
-    var uptate = document.getElementById('update-btn')
-    uptate.addEventListener('click', e => {
-      var oinput=document.getElementById('spectrum_id');
-      var spectrum_id=oinput.value;
-      for(let spectrum of spectrums){
-        console.log(spectrum);
-        if(window.confirm("update spectrum "+spectrum_id+"?")){
-          axios.put('/spectrum/'+spectrum_id, spectrum);
-          return true;
-        }else{
-          return false;
-        }
-      }
-    });
-
-
-    function loadSpectrum(spectrum) {
-      const lines = spectrum.split('\n')
-      const res = {}
-      const x = [], y = []
-      for (let line of lines) {
-        if (line.includes('#')) {
-          // strip #
-          line = line.replace(/#/g, '')
-
-          // key value
-          for (let sep of [':', '=']) {
-            if (line.includes(sep)) {
-              let prop = line.split(sep)
-              if (prop.length != 2) continue
-              if (!prop[0] || !prop[1]) continue
-              let key = prop[0].trim().replace(' ', '_').toLowerCase()
-              let val = prop[1].trim()
-              if(key.includes('name')) key = 'name'
-              // if(key in ['name', 'cas', 'description', 'measured_chemistry', 'ideal_chemistry', 'orientation', 'status', 'pin_id', 'source','locality'])
-              res[key] = val
-              break;
-            }
-          }
-        }
-
-        else {
-          let isDigit = x => /^\d+$/g.test(x.trim())
-
-          for (let sep of [' ', ',']) {
-            let xy = line.split(sep)
-            if (xy.length != 2) continue
-            if (isDigit(xy[0]) || isDigit(xy[1])) continue
-            x.push(+xy[0].trim())
-            y.push(+xy[1].trim())
-          }
-          res.data = { x, y }
-        }
-
-
-      }
-      return res
+          drawChart(option)
+        };
+      })(f);
+      reader.readAsText(f);
     }
 
-    // graph
-    var myChart = echarts.init(document.getElementById('echarts'));
+  });
 
-    // var
-    // myChart.setOption(option);
-    function drawChart(option) {
-      myChart.setOption(option);
+  var create = document.getElementById('retrieve-btn');
+  create.addEventListener('click', e => {
+    for (let spectrum of spectrums) {
+      console.log(spectrum);
+      // spectrum.cas='123'
+      axios.post('/spectrum', spectrum)
     }
-  </script>
+  });
+
+
+  <!--update点击事件-->
+  var update = document.getElementById('update-btn');
+  update.addEventListener('click', e => {
+    var oinput = document.getElementById('spectrum_id');
+    var spectrum_id = oinput.value;
+    for (let spectrum of spectrums) {
+      console.log(spectrum);
+      if (window.confirm("update spectrum " + spectrum_id + "?")) {
+        axios.put('/spectrum/' + spectrum_id, spectrum);
+        return true;
+      } else {
+        return false;
+      }
+    }
+  });
+
+  <!--delete点击事件-->
+  var delete_b = document.getElementById('delete-btn');
+  delete_b.addEventListener('click', e => {
+    var oinput = document.getElementById('spectrum_id');
+    var spectrum_id = oinput.value;
+    if (window.confirm("delete spectrum " + spectrum_id + "?")) {
+      axios.delete('/spectrum/' + spectrum_id);
+      return true;
+    } else {
+      return false;
+    }
+  });
+
+  function loadSpectrum(spectrum) {
+    const lines = spectrum.split('\n');
+    const res = {};
+    const x = [], y = [];
+    for (let line of lines) {
+      if (line.includes('#')) {
+        // strip #
+        line = line.replace(/#/g, '');
+
+        // key value
+        for (let sep of [':', '=']) {
+          if (line.includes(sep)) {
+            let prop = line.split(sep);
+            if (prop.length !== 2) continue;
+            if (!prop[0] || !prop[1]) continue;
+            let key = prop[0].trim().replace(' ', '_').toLowerCase();
+            let val = prop[1].trim();
+            if (key.includes('name')) key = 'name';
+            // if(key in ['name', 'cas', 'description', 'measured_chemistry', 'ideal_chemistry', 'orientation', 'status', 'pin_id', 'source','locality'])
+            res[key] = val;
+            break;
+          }
+        }
+      } else {
+        let isDigit = x => /^\d+$/g.test(x.trim());
+
+        for (let sep of [' ', ',']) {
+          let xy = line.split(sep);
+          if (xy.length !== 2) continue;
+          if (isDigit(xy[0]) || isDigit(xy[1])) continue;
+          x.push(+xy[0].trim());
+          y.push(+xy[1].trim())
+        }
+        res.data = {x, y}
+      }
+
+
+    }
+    return res
+  }
+
+  // graph
+  var myChart = echarts.init(document.getElementById('echarts'));
+
+  // var
+  // myChart.setOption(option);
+  function drawChart(option) {
+    myChart.setOption(option);
+  }
+</script>
 </body>
 
 </html>
