@@ -1,19 +1,3 @@
-# """Application routes."""
-# from operator import itemgetter
-# from datetime import datetime as dt
-# import pandas as pd
-# import numpy as np
-# import json
-#
-# from flask import current_app as app
-# from flask import make_response, redirect, render_template, request, url_for, jsonify, \
-#     send_from_directory
-# from flask_api import status
-# from sqlalchemy import create_engine
-#
-# from app.models import User, db, Spectrum
-#
-# from app.classification import random_forest, boosting, feat_peak, siamese
 """Application routes."""
 from operator import itemgetter
 import pyecharts.options as opts
@@ -29,9 +13,9 @@ from flask import make_response, redirect, render_template, request, url_for, js
     send_from_directory
 from flask_api import status
 
-from .models import User, db, Spectrum
+from app.models import User, db, Spectrum
 
-from .classification import random_forest, boosting, feat_peak, siamese
+from app.classification import random_forest, boosting, feat_peak, siamese
 
 
 
@@ -198,7 +182,7 @@ def query_spectrums():
                     .add_yaxis('', y)
                     .set_global_opts(
                     title_opts=opts.TitleOpts(title=exist_spectrum.name)))
-            c.render(path='api/public/check2.html')
+            c.render(path='app/templates/check.html')
             return 'hello world'
         else:
             return '光谱不存在'
@@ -223,7 +207,7 @@ def query_spectrums():
                     .add_yaxis('', y)
                     .set_global_opts(
                     title_opts=opts.TitleOpts(title=exist_spectrum.name)))
-            c.render(path='api/public/check2.html')
+            c.render(path='app/templates/check.html')
             return 'hello world'
         else:
             return '光谱不存在'
@@ -248,15 +232,11 @@ def query_spectrums():
                     .add_yaxis('', y)
                     .set_global_opts(
                     title_opts=opts.TitleOpts(title=exist_spectrum.name)))
-            c.render(path='api/public/check2.html')
+            c.render(path='app/templates/check.html')
             return 'hello world'
         else:
 
             return '光谱不存在'
-
-
-
-
     else:
         return '参数有误，请重新输入'
 
