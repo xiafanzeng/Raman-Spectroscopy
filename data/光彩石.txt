@@ -9,7 +9,7 @@
 #Test time:Not entered
 #Other experimental details:Not entered
 #Shining_data
-114.2189 0.0000000E+00
+113.2189 0.0000000E+00
 114.7010 9.6252002E-02
 115.1832 0.4733890
 115.6653 1.169891

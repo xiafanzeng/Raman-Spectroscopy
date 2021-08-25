@@ -1,0 +1,1 @@
+spectral_shape = (1, 128)

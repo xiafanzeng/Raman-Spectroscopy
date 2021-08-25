@@ -1,4 +1,5 @@
 <template>
+
   <div id="app">
     <div class="container">
       <div class="page-header">
@@ -63,6 +64,7 @@
 </template>
 
 <script>
+  import "public/style.css"
 export default {
   data() {
     return {

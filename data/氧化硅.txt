@@ -1349,12 +1349,3 @@
 1422.304 6565
 1423.396 6445
 1424.488 6383
-loop_
-_rod_maintainer_comment.id
-_rod_maintainer_comment.author
-_rod_maintainer_comment.date
-_rod_maintainer_comment.text
-#1 mkanzaki 2019-10-14T13:26:36+0300
-;I added polymorph name to title as this info does not appear when
- searched.
-;
