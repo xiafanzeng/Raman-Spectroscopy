@@ -1,4 +1,24 @@
+
+
 """Application routes."""
+# from operator import itemgetter
+# import pyecharts.options as opts
+# from pyecharts.charts import Line
+# import demjson
+# from datetime import datetime as dt
+# import pandas as pd
+# import numpy as np
+# import json
+# import flask
+# from flask import current_app as app
+# from flask import make_response, redirect, render_template, request, url_for, jsonify, \
+#     send_from_directory
+# from flask_api import status
+#
+# from ..models import User, db, Spectrum
+# # from ..templates
+# from ..classification import random_forest, boosting, feat_peak, siamese
+
 from operator import itemgetter
 import pyecharts.options as opts
 from pyecharts.charts import Line
@@ -10,7 +30,7 @@ import json
 import flask
 from flask import current_app as app
 from flask import make_response, redirect, render_template, request, url_for, jsonify, \
-    send_from_directory
+    send_from_directory, Response
 from flask_api import status
 
 from app.models import User, db, Spectrum
@@ -157,6 +177,42 @@ def get_one_spectrum(id):
         return not_found('')
 
 
+
+@app.route('/check.html', methods=['GET'])
+def return_index_html():
+    return send_from_directory('static', 'check.html')
+
+
+@app.route('/spectrum/check.html', methods=['GET'])
+def return_check_html():
+    return send_from_directory('static', 'check.html')
+
+
+@app.route('/spectrum/downloadfile', methods=['GET'])
+def return_down_txt():
+    # filename = 'raman.txt'
+
+    # 普通下载
+    # response = make_response(send_from_directory(filepath, filename, as_attachment=True))
+    # response.headers["Content-Disposition"] = "attachment; filename={}".format(filepath.encode().decode('latin-1'))
+    # return send_from_directory(filepath, filename, as_attachment=True)
+    # 流式读取
+    def send_file():
+        store_path = 'app/templates/raman.txt'
+        with open(store_path, 'rb') as targetfile:
+            while 1:
+                data = targetfile.read(20 * 1024 * 1024)  # 每次读取20M
+                if not data:
+                    break
+                yield data
+
+    response = Response(send_file(), content_type='application/octet-stream')
+    response.headers[
+        "Content-disposition"] = 'attachment; filename=%s' % 'raman.txt'  # 如果不加上这行代码，导致下图的问题
+    return response
+    # return send_from_directory('public', 'raman.txt', as_attachment=True)
+
+
 @app.route('/spectrum/query', methods=['POST'])
 def query_spectrums():
     query_sort = flask.request.form.get('query_sort')
@@ -170,10 +226,25 @@ def query_spectrums():
         exist_spectrum = Spectrum.query.get(raman_id)
 
         if exist_spectrum:
+
             b = demjson.decode(exist_spectrum.data)
 
             x = b['x']
             y = b['y']
+
+            result = {'name': exist_spectrum.name, 'cas': exist_spectrum.cas,
+                      'id': exist_spectrum.id,
+                      'Raman_shift': 'Intensity'}
+
+            file = open('app/templates/raman.txt', 'w')
+            for k, v in result.items():
+                file.write(str(k) + ' ' + str(v) + '\n')
+
+            for i, j in zip(x, y):
+                file.write(str(i) + ' ' + str(j) + '\n')
+
+            file.close()
+            print(result)
             print(x)
             print(y)
             print(exist_spectrum.name)
@@ -182,34 +253,51 @@ def query_spectrums():
                     .add_yaxis('', y)
                     .set_global_opts(
                     title_opts=opts.TitleOpts(title=exist_spectrum.name)))
-            c.render(path='app/templates/check.html')
-            return 'hello world'
+            c.render(path='app/static/check.html')
+
+            return send_from_directory('static', 'query.html')
+
         else:
             return '光谱不存在'
+
+
+
 
 
     elif query_sort == 'CAS':
 
         raman_cas = query_number
+        try:
+            exist_spectrum = Spectrum.query.filter_by(CAS=raman_cas).all()[0]
 
-        exist_spectrum = Spectrum.query.filter_by(CAS=raman_cas).all()[0]
+            if exist_spectrum:
+                b = demjson.decode(exist_spectrum.data)
 
-        if exist_spectrum:
-            b = demjson.decode(exist_spectrum.data)
+                x = b['x']
+                y = b['y']
+                result = {'name': exist_spectrum.name, 'cas': exist_spectrum.cas,
+                          'id': exist_spectrum.id,
+                          'Raman_shift': 'Intensity'}
 
-            x = b['x']
-            y = b['y']
-            print(x)
-            print(y)
-            print(exist_spectrum.name)
-            c = (
-                Line().add_xaxis(x)
-                    .add_yaxis('', y)
-                    .set_global_opts(
-                    title_opts=opts.TitleOpts(title=exist_spectrum.name)))
-            c.render(path='app/templates/check.html')
-            return 'hello world'
-        else:
+                file = open('app/templates/raman.txt', 'w')
+                for k, v in result.items():
+                    file.write(str(k) + ' ' + str(v) + '\n')
+
+                for i, j in zip(x, y):
+                    file.write(str(i) + ' ' + str(j) + '\n')
+
+                file.close()
+                print(x)
+                print(y)
+                print(exist_spectrum.name)
+                c = (
+                    Line().add_xaxis(x)
+                        .add_yaxis('', y)
+                        .set_global_opts(
+                        title_opts=opts.TitleOpts(title=exist_spectrum.name)))
+                c.render(path='app/static/check.html')
+                return send_from_directory('static', 'query.html')
+        except:
             return '光谱不存在'
 
 
@@ -217,37 +305,60 @@ def query_spectrums():
     elif query_sort == 'name':
 
         raman_name = query_number
-        exist_spectrum = Spectrum.query.filter_by(name=raman_name).all()[0]
-        print(exist_spectrum)
-        if exist_spectrum:
-            b = demjson.decode(exist_spectrum.data)
+        try:
+            exist_spectrum = Spectrum.query.filter_by(name=raman_name).all()[0]
+            print(exist_spectrum)
+            if exist_spectrum:
+                b = demjson.decode(exist_spectrum.data)
 
-            x = b['x']
-            y = b['y']
-            print(x)
-            print(y)
-            print(exist_spectrum.name)
-            c = (
-                Line().add_xaxis(x)
-                    .add_yaxis('', y)
-                    .set_global_opts(
-                    title_opts=opts.TitleOpts(title=exist_spectrum.name)))
-            c.render(path='app/templates/check.html')
-            return 'hello world'
-        else:
+                x = b['x']
+                y = b['y']
 
+                result = {'name': exist_spectrum.name, 'cas': exist_spectrum.cas,
+                          'id': exist_spectrum.id,
+                          'Raman_shift': 'Intensity'}
+
+                file = open('app/templates/raman.txt', 'w')
+                for k, v in result.items():
+                    file.write(str(k) + ' ' + str(v) + '\n')
+
+                for i, j in zip(x, y):
+                    file.write(str(i) + ' ' + str(j) + '\n')
+
+                file.close()
+                print(x)
+                print(y)
+                print(exist_spectrum.name)
+                c = (
+                    Line().add_xaxis(x)
+                        .add_yaxis('', y)
+                        .set_global_opts(
+                        title_opts=opts.TitleOpts(title=exist_spectrum.name)))
+                c.render(path='app/static/check.html')
+                return send_from_directory('static', 'query.html')
+        except:
             return '光谱不存在'
     else:
         return '参数有误，请重新输入'
 
 
-@app.route('/spectrum/<id>', methods=['PUT'])
-def update_one_spectrum(id):
+
+@app.route('/spectrum', methods=['PUT'])
+def update_one_spectrum():
     # update operation
+    temp_id = 0
+    file = open('app/templates/raman.txt')
+    for line in file:
+        line = line.strip("\n")
+        a, b = line.split(" ")
+        if (a == "id"):
+            temp_id = int(b)
+            break
+
     spectrum = request.get_json()
     name, cas, data = itemgetter('name', 'cas', 'data')(spectrum)
 
-    exist_spectrum = Spectrum.query.get(id)
+    exist_spectrum = Spectrum.query.get(temp_id)
     if exist_spectrum:
         exist_spectrum.name = name
         exist_spectrum.cas = cas
@@ -258,16 +369,27 @@ def update_one_spectrum(id):
         return not_found('')
 
 
-@app.route('/spectrum/<id>', methods=['DELETE'])
-def delete_one_spectrum(id):
+@app.route('/spectrum', methods=['DELETE'])
+def delete_one_spectrum():
     # delete operation
-    exist_spectrum = Spectrum.query.get(id)
+    temp_id = 0
+    file = open('app/templates/raman.txt')
+    for line in file:
+        line = line.strip("\n")
+        a, b = line.split(" ")
+        if (a == "id"):
+            temp_id = int(b)
+            break
+
+    exist_spectrum = Spectrum.query.get(temp_id)
     if exist_spectrum:
         db.session.delete(exist_spectrum)
         db.session.commit()
         return jsonify(status=200, message='deleted')
     else:
         return not_found('')
+
+
 
 
 

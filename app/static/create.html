@@ -133,47 +133,88 @@
               y2: 100,
               borderWidth: 10
             },
+             yAxis: {
+                name:'拉曼强度(Intensity)',
+                //坐标轴名称与轴线之间的距离
+                nameGap:80,
+                //大体位置调整nameLocation,end、start、 center
+                nameLocation:'center',
+                //nameRotate,旋转度数
+                nameRotate:'90',
+                nameTextStyle:{
+                  padding:[0,0,0,0],
+                  fontSize: 14,
 
-            yAxis: {
-              name:'拉曼强度(Intensity)',
-              //坐标轴名称与轴线之间的距离
-              nameGap:80,
-              //大体位置调整nameLocation,end、start、 center
-              nameLocation:'center',
-              //nameRotate,旋转度数
-              nameRotate:'90',
-              nameTextStyle:{
-                padding:[0,0,0,0],
-                fontSize: 14,
+                },
+                axisLabel: {
+                  formatter:function (value, index) {
+                    return value.toFixed(1);
+                  }
+                },
+                type:'value',  //Y轴刻度显示整数
+                min:0,
+                max:2000,
+                interval:200,
+                data: spectrums[0].data.y,
+
+
 
               },
-              // axisLabel: {
-              //   formatter:function (value, index) {
-              //     return value.toFixed(1);
-              //   }
-              // },
-              // type:'value',  //Y轴刻度显示整数
-              // min:0,
-              // max:22000,
-              // interval:2000,
-              data: spectrums[0].data.y,
+              series: [{
+                // name: 'asd',
+                // type: 'bar',
+                type: 'line',
+                data: spectrums[0].data.y
+              }]
+            }
+            drawChart(option)
+          };
+        })(f);
+        reader.readAsText(f);
+      }
 
+    })
 
-            },
-            series: [{
-              // name: 'asd',
-              // type: 'bar',
-              type: 'line',
-              data: spectrums[0].data.y
-            }]
-          }
-          drawChart(option)
-        };
-      })(f);
-      reader.readAsText(f);
-    }
-
-  })
+  //           yAxis: {
+  //             name:'拉曼强度(Intensity)',
+  //             //坐标轴名称与轴线之间的距离
+  //             nameGap:80,
+  //             //大体位置调整nameLocation,end、start、 center
+  //             nameLocation:'center',
+  //             //nameRotate,旋转度数
+  //             nameRotate:'90',
+  //             nameTextStyle:{
+  //               padding:[0,0,0,0],
+  //               fontSize: 14,
+  //
+  //             },
+  //             // axisLabel: {
+  //             //   formatter:function (value, index) {
+  //             //     return value.toFixed(1);
+  //             //   }
+  //             // },
+  //             // type:'value',  //Y轴刻度显示整数
+  //             // min:0,
+  //             // max:22000,
+  //             // interval:2000,
+  //             data: spectrums[0].data.y,
+  //
+  //
+  //           },
+  //           series: [{
+  //             // name: 'asd',
+  //             // type: 'bar',
+  //             type: 'line',
+  //             data: spectrums[0].data.y
+  //           }]
+  //         }
+  //         drawChart(option)
+  //       };
+  //     })(f);
+  //     reader.readAsText(f);
+  //   }
+  //
+  // })
 
 
   var create = document.getElementById('retrieve-btn')

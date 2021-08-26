@@ -42,7 +42,17 @@
     .btn{
       margin-bottom: 10px;
     }
+    .glyphicon-trash, .glyphicon-refresh,.glyphicon-save{
+      font-size: 20px;
 
+    }
+    #infoshow{
+      width: 100%;
+      height: auto;
+
+      border:1px white solid;
+
+    }
 
   </style>
 </head>
@@ -72,41 +82,54 @@
       <div class="query_data">
         <form name='query' method="post" action="/spectrum/query">
           <!--                <input type="text" name = "query_sort" placeholder="id/CAS/name">-->
-          <input type="radio" name="query_sort" value="id" placeholder="id">id <br>
-          <input type="radio" name="query_sort" value="CAS" placeholder="cas">cas
+          <input type="radio" name="query_sort" value="id" placeholder="id"> Id
+          <input type="radio" name="query_sort" value="CAS" placeholder="cas"> CAS
+
+          <input type="radio" name="query_sort" value="name" placeholder="name"> Name
           <br>
-          <input type="radio" name="query_sort" value="name" placeholder="name">name
-          <br>
-          <input type="text" style=" width: 300px" name="query_number" placeholder="Please enter spectrum id\ Name \ CAS number">
-          <input type="submit" value="query_submit">
+          <input type="text" style=" width: 300px" name="query_number" placeholder="Please enter spectrum Id\ Name \ CAS number">
+          <!--<input type="submit" value="查询" class="btn-primary">-->
+          <button type="submit" class="btn-primary btn btn-primary">查询</button>
         </form>
 
       </div>
     </div><!-- /.col-lg-6 -->
-    <div class="col-md-6">
-      <input type="file" class="btn btn-primary" id="file-loader" multiple>
-      <!--添加一个文本框用来输入光谱号，根据光谱编号进行更新-->
-      <input type="text" value="" id="spectrum_id" placeholder="Please enter spectrum id"/>
-      <button type="submit" class="btn btn-danger" id="update-btn">
-        update
-      </button>
-      <button type="submit" class="btn btn-danger" id="delete-btn">
-        delete
-      </button>
-
-
-    </div>
     <div class="col-md-12">
       <p><b>查询信息如下:</b></p>
-    </div>
+      <div id="infoshow" class="page-wrapper" style="text-align: right">
+       <a  style="margin-left: 4px" name="downloadbtn" class="btn btn-primary pull-right" href="downloadfile">下载此光谱数据
+       <span class="glyphicon glyphicon-save"></span>
+       </a>
+        <!--<button type="submit" name="downloadbtn" class="btn btn-success pull-right" href="downloadfile">-->
+        <!--下载该光谱数据 <span class="glyphicon glyphicon-refresh"></span>-->
+         <!--</button>-->
+        <button type="submit" class="btn btn-primary" id="delete-btn">
+        删除此光谱数据 <span class="glyphicon glyphicon-trash"></span>
+        </button>
+        <input type="file" class="btn btn-primary" id="file-loader" multiple style="float:right; margin-left: 4px">
+         <button type="submit" class="btn btn-primary" id="update-btn">
+        选择文件更新此光谱数据 <span class="glyphicon glyphicon-refresh"></span>
+         </button>
+
+      <iframe src="../static/check.html" name="i" id="urlIframe" width="100%" height="100%"
+          frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
+          onload="reinitIframe()">
+
+      </iframe>
+
+</div>
+      </div>
+
   </div><!-- /.row -->
 
-
-
-  <div class="graph">
-    <div id="echarts" style="height: 400px; width: 400px;"></div>
-  </div>
 </div>
+<!--<div class="page-wrapper">-->
+
+  <!--<iframe src="check.html" name="i" id="urlIframe" width="100%" height="100%"-->
+          <!--frameborder="0" scrolling="no" marginheight="0" marginwidth="0"-->
+          <!--onload="reinitIframe()"></iframe>-->
+
+<!--</div>-->
 
 <script>
   var spectrums = [];
@@ -155,15 +178,13 @@
 
   })
 
-  // <!--update点击事件-->
+   <!--update点击事件-->
   var update = document.getElementById('update-btn');
   update.addEventListener('click', e => {
-    var oinput = document.getElementById('spectrum_id');
-    var spectrum_id = oinput.value;
     for (let spectrum of spectrums) {
       console.log(spectrum);
-      if (window.confirm("update spectrum " + spectrum_id + "?")) {
-        axios.put('/spectrum/' + spectrum_id, spectrum);
+      if (window.confirm("update spectrum ?")) {
+        axios.put('/spectrum', spectrum);
         return true;
       } else {
         return false;
@@ -171,18 +192,20 @@
     }
   });
 
+
   <!--delete点击事件-->
   var delete_b = document.getElementById('delete-btn');
   delete_b.addEventListener('click', e => {
-    var oinput = document.getElementById('spectrum_id');
-    var spectrum_id = oinput.value;
-    if (window.confirm("delete spectrum " + spectrum_id + "?")) {
-      axios.delete('/spectrum/' + spectrum_id);
+    if (window.confirm("delete spectrum ?")) {
+      axios.delete('/spectrum');
       return true;
     } else {
       return false;
     }
   });
+
+
+
 
   function loadSpectrum(spectrum) {
     const lines = spectrum.split('\n');
@@ -225,14 +248,14 @@
     return res
   }
 
-  // graph
-  var myChart = echarts.init(document.getElementById('echarts'));
-
-  // var
-  // myChart.setOption(option);
-  function drawChart(option) {
-    myChart.setOption(option);
-  }
+  // // graph
+  // var myChart = echarts.init(document.getElementById('echarts'));
+  //
+  // // var
+  // // myChart.setOption(option);
+  // function drawChart(option) {
+  //   myChart.setOption(option);
+  // }
   //query
   function reinitIframe() {
     var iframe = document.getElementById("urlIframe");
