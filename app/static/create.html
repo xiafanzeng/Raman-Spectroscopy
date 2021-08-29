@@ -13,75 +13,141 @@
 <!--  <script src="../static/fonts/glyphicons-halflings-regular.svg"></script>-->
     <title>create spectrum</title>
   <style type="text/css">
-    body{
-      background-color: #e0e0e0;
+     body{
+      font-family: "Microsoft YaHei", Arial, sans-serif;
     }
     .page-header{
-      margin-top: 15px;
-      /*background-color: #337ab7;*/
+      margin-bottom: 10px;
+
     }
-    .createsp {
-      /*margin-left: 100px;*/
-      /*background-color: #337ab7;*/
-      font-size: 50px;
+    h1 {
+       padding-left: 10px;
+       color: #b6bb99;
+
+        font-size: 46px;
+
+}
+     h1 span{
+       color: #0868a3;
+     }
+     h1 small{
+       color: #747474;
+     }
+    .clearfix::after,.clearfix::before{
+      content: '';
+      display: table;
+      clear: both;
+    }
+    .navbar-nav li a{
+      margin: auto 50px;
+      font-size: 16px;
+    }
+    .navbar-default .navbar-nav>li>a {
+    color: #fff;
+}
+    .navbar-nav li:hover{
+      background-color: darkgray;
+    }
+    .navbar-default{
+      background-color: #337ab7;
     }
 
     .glyphicon-edit{
-      font-size: 40px;
+      font-size: 23px;
     }
     p{
       font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
       font-size: 20px;
     }
-    span{
-      font-size: 50px;
-    }
+    /*span{*/
+      /*font-size: 50px;*/
+    /*}*/
     span.sp{
       display: inline;
       font-size: 20px;
       font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      float: left;
     }
-    /*input{*/
-    /*  margin-left: 10px;*/
 
-    /*}*/
     .btn{
-      margin-bottom: 10px;
+      margin: -5px 10px;
+      float: left;
+
     }
     #retrieve-btn span{
 
       font-size: 12px;
       line-height: 100%;
+      float: left;
+    }
+    #retrieve-btn{
+      display: block;
+      margin-left: -100px;
+    }
+    .graph{
+      margin: 30px 50px;
     }
 
   </style>
 </head>
 <body>
-<div class="container">
-  <div class="page-header ">
-    <span class="createsp">创建光谱  <span class="glyphicon glyphicon-edit"></span> </span>
+<!--页面头部-->
+<div class="page-header">
+  <h1><span >Sit</span>Raman System <small>上海应用技术大学拉曼光谱分析系统</small></h1>
+</div>
+<!--导航栏-->
+<nav class="navbar navbar-default">
+  <div class="container-fluid first div">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/" style=" color: white;margin-left: 30px">首页</a>
+    </div>
 
-  </div>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="meta"><a  href="../static/create.html" >上传光谱数据 </a></li>
+        <li class="meta"><a href="../static/query.html" >查询光谱信息</a></li>
+        <li class="meta"><a href="../static/query.html" >光谱数据分类</a></li>
+        <li class="dropdown meta">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" >了解更多关于拉曼光谱<span class="caret"></span></a>
+          <ul class="dropdown-menu" style="background-color: #337ab7">
+            <li ><a href="#">拉曼光谱原理</a></li>
+            <li ><a href="#">拉曼光谱应用</a></li>
+            <li><a href="#">Something else here</a></li>
+
+          </ul>
+        </li>
+        <li class="meta"><a href="#" >联系我们</a></li>
+
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+<div class="container">
 
   <!-- Flash Message -->
 
   <div class="row">
     <div class="col-md-12">
-      <span class="sp"><b>选择要创建的拉曼光谱数据:</b></span>
-    </div>
-    <div class="col-md-12">
-      <input type="file" class="btn btn-primary" id="file-loader"  multiple>
-    </div>
-    <div class="col-md-12">
-      <button type="submit" class="btn btn-primary" id="retrieve-btn">
-        将以上所选文件创建为新的光谱  <span class="glyphicon glyphicon-plus"></span>
+
+      <span class="sp"><b>选择要上传的拉曼光谱数据
+        <span class="glyphicon glyphicon-edit"></span> ：</b>
+      </span><input type="file" class="btn " id="file-loader"  multiple>
+       <button type="submit" class="btn btn-primary" id="retrieve-btn">
+        上传光谱数据
       </button>
+
     </div>
-    <div class="col-md-12">
-      <p><b>该数据对应光谱图像如下图所示:</b></p>
-    </div>
-    <div class="graph col-md-12"><b>graph:</b>
-      <div id="echarts" style="height: 400px; width: 400px;"></div>
+
+    <div class="graph col-md-12">
+      <div id="echarts" style="height: 500px; width: 500px;"></div>
     </div>
   </div>
 </div>
@@ -152,11 +218,10 @@
                   }
                 },
                 type:'value',  //Y轴刻度显示整数
-                min:0,
-                max:2000,
-                interval:200,
+                min:spectrums[0].data.y.min,
+                max:spectrums[0].data.y.max,
+                // interval:spectrums[0].data.y.length*5,
                 data: spectrums[0].data.y,
-
 
 
               },
@@ -222,7 +287,7 @@
     for(let spectrum of spectrums){
       console.log(spectrum);
       // spectrum.cas='123'
-      if(window.confirm( "确定创建该光谱"+"?")){
+      if(window.confirm( "确定上传该光谱"+"?")){
         axios.post('/spectrum', spectrum)
         return true;
       }
@@ -259,13 +324,14 @@
       }
 
       else {
-        let isDigit = x => /^\d+$/g.test(x.trim())
+        // let isDigit = x => /^\d+$/g.test(x.trim());
+        // let isDigit1 = x => /^\d+(\.\d+)?$/g.test(x.trim());
 
         for (let sep of [' ', ',']) {
-          let xy = line.split(sep)
-          if (xy.length != 2) continue
-          if (isDigit(xy[0]) || isDigit(xy[1])) continue
-          x.push(+xy[0].trim())
+          let xy = line.split(sep);
+          if (xy.length != 2) continue;
+          // if (isDigit(xy[0]) || isDigit(xy[1])) continue;
+          x.push(+xy[0].trim());
           y.push(+xy[1].trim())
         }
         res.data = { x, y }
@@ -275,7 +341,6 @@
     }
     return res
   }
-
   // graph
   var myChart = echarts.init(document.getElementById('echarts'));
 

@@ -124,6 +124,15 @@ def internal_server_error(error):
         status.HTTP_500_INTERNAL_SERVER_ERROR,
     )
 
+@app.after_request
+def add_header(response):
+    """
+    Add headers to both force latest IE rendering engine or Chrome Frame,
+    and also to cache the rendered page for 10 minutes.
+    """
+    response.headers['X-UA-Compatible'] = 'IE=Edge,chrome=1'
+    response.headers['Cache-Control'] = 'public, max-age=0'
+    return response
 
 # apis
 @app.route('/', methods=['GET'])
@@ -135,8 +144,9 @@ def index():
 def create_one_spectrum():
     # create operation
     req = request.get_json()
-    name, data = itemgetter('name', 'data')(req)
+    name, data ,cas= itemgetter('name', 'data','cas')(req)
     print(name)
+    print(data)
     if 'x' in data and 'y' in data and data['x'] and data['y']:
         existing_spectrum = Spectrum.query.filter(
             Spectrum.data == f'{data}'
@@ -146,7 +156,8 @@ def create_one_spectrum():
         new_spectrum = Spectrum(
             name=name,
             created=dt.now(),
-            data=f'{data}'
+            data=f'{data}',
+            cas=cas
             # **req
         )
         db.session.add(new_spectrum)
@@ -212,7 +223,6 @@ def return_down_txt():
     return response
     # return send_from_directory('public', 'raman.txt', as_attachment=True)
 
-
 @app.route('/spectrum/query', methods=['POST'])
 def query_spectrums():
     query_sort = flask.request.form.get('query_sort')
@@ -226,9 +236,7 @@ def query_spectrums():
         exist_spectrum = Spectrum.query.get(raman_id)
 
         if exist_spectrum:
-
             b = demjson.decode(exist_spectrum.data)
-
             x = b['x']
             y = b['y']
 
@@ -254,15 +262,9 @@ def query_spectrums():
                     .set_global_opts(
                     title_opts=opts.TitleOpts(title=exist_spectrum.name)))
             c.render(path='app/static/check.html')
-
             return send_from_directory('static', 'query.html')
-
         else:
             return '光谱不存在'
-
-
-
-
 
     elif query_sort == 'CAS':
 
@@ -299,8 +301,6 @@ def query_spectrums():
                 return send_from_directory('static', 'query.html')
         except:
             return '光谱不存在'
-
-
 
     elif query_sort == 'name':
 
@@ -349,9 +349,11 @@ def update_one_spectrum():
     temp_id = 0
     file = open('app/templates/raman.txt')
     for line in file:
-        line = line.strip("\n")
-        a, b = line.split(" ")
-        if (a == "id"):
+        line = line.strip("\n").split(" ")
+        a,b=line[0],line[1]
+        if (a!="id"):
+            continue
+        else:
             temp_id = int(b)
             break
 
@@ -375,9 +377,11 @@ def delete_one_spectrum():
     temp_id = 0
     file = open('app/templates/raman.txt')
     for line in file:
-        line = line.strip("\n")
-        a, b = line.split(" ")
-        if (a == "id"):
+        line = line.strip("\n").split(" ")
+        a,b=line[0],line[1]
+        if (a!="id"):
+            continue
+        else:
             temp_id = int(b)
             break
 

@@ -14,7 +14,6 @@
   <!--[if lt IE 9]-->
  <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
  <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-  <script>if(self !=top) top.location.href = window.location.href;</script>
 
 <!--  <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>&ndash;&gt;-->
   <!--  <script href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>-->
@@ -24,23 +23,9 @@
     body{
       font-family: "Microsoft YaHei", Arial, sans-serif;
     }
-    .page-header{
-      margin-bottom: 10px;
-
-    }
      h1 {
-       padding-left: 10px;
-       color: #b6bb99;
-
-        font-size: 46px;
-
+    font-size: 40px;
 }
-     h1 span{
-       color: #0868a3;
-     }
-     h1 small{
-       color: #747474;
-     }
     .clearfix::after,.clearfix::before{
       content: '';
       display: table;
@@ -60,36 +45,40 @@
       background-color: #337ab7;
     }
 
-    /*.panel-group{max-height:770px;overflow: auto;}*/
-    /*.leftMenu{margin:10px;margin-top:5px;}*/
-    /*.leftMenu .panel-heading{font-size:14px;padding-left:20px;height:36px;line-height:36px;color:white;position:relative;cursor:pointer;}!*转成手形图标*!*/
-    /*.leftMenu .panel-heading span{position:absolute;right:10px;top:12px;}*/
-    /*.leftMenu .menu-item-left{padding: 2px; background: transparent; border:1px solid transparent;border-radius: 6px;}*/
-    /*.leftMenu .menu-item-left:hover{background:#C4E3F3;border:1px solid #1E90FF;*/
-    /*}*/
+    .panel-group{max-height:770px;overflow: auto;}
+    .leftMenu{margin:10px;margin-top:5px;}
+    .leftMenu .panel-heading{font-size:14px;padding-left:20px;height:36px;line-height:36px;color:white;position:relative;cursor:pointer;}/*转成手形图标*/
+    .leftMenu .panel-heading span{position:absolute;right:10px;top:12px;}
+    .leftMenu .menu-item-left{padding: 2px; background: transparent; border:1px solid transparent;border-radius: 6px;}
+    .leftMenu .menu-item-left:hover{background:#C4E3F3;border:1px solid #1E90FF;
+    }
    h3{
-     color: #337ab7;
+     color: #ffffff;
+       background-color: #b3b3b3;
+     /*margin-top: 0px;*/
+     margin: 0px ;
    }
    .introduce{
-     font-family: "Microsoft YaHei", Arial, sans-serif;
+     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
      font-size: 18px;
+
+
 
    }
    .IND{
-      /*background-color: #e0e0e0;*/
-     margin: 20px auto;
-     border: 1px #337ab7 solid;
-     padding: 0px;
 
-
-
+     border: 1px #dddddd solid ;
+     margin: 20px auto
    }
-   .title{
-      width: 100%; height: 40px; background-color: #337ab7;font-size: 18px;color: white;
-    line-height: 40px;
-     margin-top: 0px;
+   /*.title{*/
+     /*margin: 0px;*/
 
-   }
+     /*width: 100%;*/
+     /*height: 30px;*/
+     /*background-color: #b3b3b3;*/
+
+
+   /*}*/
     #carousel-example-generic img{
       width: 100%;
 
@@ -107,7 +96,7 @@
 <body>
 <!--页面头部-->
 <div class="page-header">
-  <h1><span >Sit</span>Raman System <small>上海应用技术大学拉曼光谱分析系统</small></h1>
+  <h1>SitRaman System <small>上海应用技术大学拉曼光谱分析系统</small></h1>
 </div>
 <!--导航栏-->
 <nav class="navbar navbar-default">
@@ -120,7 +109,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/" style=" color: white;margin-left: 30px">首页</a>
+      <a class="navbar-brand" href="#" style=" color: white;margin-left: 30px">首页</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -135,10 +124,10 @@
             <li ><a href="#">拉曼光谱原理</a></li>
             <li ><a href="#">拉曼光谱应用</a></li>
             <li><a href="#">Something else here</a></li>
-
+            <li role="separator" class="divider"></li>
           </ul>
         </li>
-        <li class="meta"><a href="../static/contact.html" >联系我们</a></li>
+        <li class="meta"><a href="#" >联系我们</a></li>
 
       </ul>
     </div><!-- /.navbar-collapse -->
@@ -225,7 +214,6 @@
           <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
           <li data-target="#carousel-example-generic" data-slide-to="1"></li>
           <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-          <li data-target="#carousel-example-generic" data-slide-to="3"></li>
         </ol>
 
         <!-- Wrapper for slides 图片部分-->
@@ -248,23 +236,9 @@
               ...
             </div>
           </div>
-          <div class="item">
-            <img src="../static/image/02.jpg" alt="..." class=".img-responsive">
-            <div class="carousel-caption">
-              ...
-            </div>
-          </div>
-          <div class="item">
-            <img src="../static/image/03.jpg" alt="..." class=".img-responsive">
-            <div class="carousel-caption">
-              ...
-            </div>
-          </div>
 
           ...
         </div>
-
-
 
         <!-- Controls 上一页下一页部分-->
         <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
@@ -279,12 +253,10 @@
 
     </div>
     <div class="col-md-12 IND" >
-     <div  class="title">系统介绍
-     <span class="glyphicon glyphicon-volume-up"></span>
-     </div>
+     <h3 >系统介绍</h3>
       <p class="introduce">
 
-        本系统将人工智能技术与光谱学深度结合，集成多种机器学习、深度学习算法，利用计算机缓存技术将拉曼光谱特征数据进行缓存，以实现更丰富、更准确、更快速的拉曼光谱分析识别。
+        系统将人工智能技术与光谱学深度结合，集成多种机器学习、深度学习算法，利用计算机缓存技术将拉曼光谱特征数据进行缓存，以实现更丰富、更准确、更快速的拉曼光谱分析识别。
       基于云平台的智能拉曼光谱系统实现拉曼光谱信息管理、拉曼光谱资源整合、光谱数据智能分类、集成多种智能算法，提供实时、智能、深度的、拉曼光谱大数据的在线分析处理。可用于拉曼光谱的科学研究和工业领域的应用。
       </p>
     </div>

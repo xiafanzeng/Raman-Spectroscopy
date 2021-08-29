@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>classification</title>
+<!--  <link rel="stylesheet" href="../static/css/bootstrap.css">-->
+  <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="../static/fonts"></script>
+  <script src="../static/js/jquery-3.3.1.js"></script>
+  <script src="../static/js/bootstrap.js"></script>
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]-->
+ <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+ <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+
+
+  <style>
+    body{
+      font-family: "Microsoft YaHei", Arial, sans-serif;
+    }
+    .page-header{
+      margin-bottom: 10px;
+
+    }
+     h1 {
+       padding-left: 10px;
+       color: #b6bb99;
+
+        font-size: 46px;
+
+}
+     h1 span{
+       color: #0868a3;
+     }
+     h1 small{
+       color: #747474;
+     }
+    .clearfix::after,.clearfix::before{
+      content: '';
+      display: table;
+      clear: both;
+    }
+    .navbar-nav li a{
+      margin: auto 50px;
+      font-size: 16px;
+    }
+    .navbar-default .navbar-nav>li>a {
+    color: #fff;
+}
+    .navbar-nav li:hover{
+      background-color: darkgray;
+    }
+    .navbar-default{
+      background-color: #337ab7;
+    }
+
+    .panel-group{max-height:770px;overflow: auto;}
+    .leftMenu{margin:10px;margin-top:5px;}
+    .leftMenu .panel-heading{font-size:14px;padding-left:20px;height:36px;line-height:36px;color:white;position:relative;cursor:pointer;}/*转成手形图标*/
+    .leftMenu .panel-heading span{position:absolute;right:10px;top:12px;}
+    .leftMenu .menu-item-left{padding: 2px; background: transparent; border:1px solid transparent;border-radius: 6px;}
+    .leftMenu .menu-item-left:hover{background:#C4E3F3;border:1px solid #1E90FF;
+    }
+   h3{
+     color: #337ab7;
+   }
+
+
+    #carousel-example-generic img{
+      width: 100%;
+
+    }
+    .carousel-inner > .item > img {
+
+      display: block;
+      width:100%;
+      height:100%;
+
+    }
+
+  </style>
+</head>
+<body>
+<!--页面头部-->
+<div class="page-header">
+  <h1><span >Sit</span>Raman System <small>上海应用技术大学拉曼光谱分析系统</small></h1>
+</div>
+<!--导航栏-->
+<nav class="navbar navbar-default">
+  <div class="container-fluid first div">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/" style=" color: white;margin-left: 30px">首页</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="meta"><a  href="../static/create.html" >上传光谱数据 </a></li>
+        <li class="meta"><a href="../static/query.html" >查询光谱信息</a></li>
+        <li class="meta"><a href="../static/classification.html" >光谱数据分类</a></li>
+        <li class="dropdown meta">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" >了解更多关于拉曼光谱<span class="caret"></span></a>
+          <ul class="dropdown-menu" style="background-color: #337ab7">
+            <li ><a href="#">拉曼光谱原理</a></li>
+            <li ><a href="#">拉曼光谱应用</a></li>
+            <li><a href="#">Something else here</a></li>
+
+          </ul>
+        </li>
+        <li class="meta"><a href="../static/contact.html" >联系我们</a></li>
+
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <!--左侧折叠导航-->
+      <div class="panel-group table-responsive" role="tablist">
+        <div class="panel panel-primary leftMenu">
+          <!-- 利用data-target指定要折叠的分组列表 -->
+          <div class="panel-heading" id="collapseListGroupHeading1" data-toggle="collapse" data-target="#collapseListGroup1" role="tab" >
+            <h4 class="panel-title">
+              机器学习分类算法
+              <span class="glyphicon glyphicon-chevron-up right"></span>
+            </h4>
+          </div>
+          <!-- .panel-collapse和.collapse标明折叠元素 .in表示要显示出来 -->
+          <div id="collapseListGroup1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="collapseListGroupHeading1">
+            <ul class="list-group">
+              <li class="list-group-item">
+                <!-- 利用data-target指定URL -->
+                <button class="menu-item-left">
+                  <span class="glyphicon glyphicon-triangle-right"></span>随机森林
+                </button>
+              </li>
+              <li class="list-group-item">
+                <button class="menu-item-left">
+                  <span class="glyphicon glyphicon-triangle-right"></span>神经网络
+                </button>
+              </li>
+              <li class="list-group-item">
+                <button class="menu-item-left">
+                  <span class="glyphicon glyphicon-triangle-right"></span>Adaboost
+                </button>
+              </li>
+              <li class="list-group-item">
+                <button class="menu-item-left">
+                  <span class="glyphicon glyphicon-triangle-right"></span>XGBoost
+                </button>
+              </li>
+              <li class="list-group-item">
+                <button class="menu-item-left">
+                  <span class="glyphicon glyphicon-triangle-right"></span>GBDT
+                </button>
+              </li>
+
+            </ul>
+          </div>
+        </div><!--panel end-->
+        <div class="panel panel-primary leftMenu">
+          <div class="panel-heading" id="collapseListGroupHeading2" data-toggle="collapse" data-target="#collapseListGroup2" role="tab" >
+            <h4 class="panel-title">
+              深度学习算法
+              <span class="glyphicon glyphicon-chevron-down right"></span>
+            </h4>
+          </div>
+          <div id="collapseListGroup2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapseListGroupHeading2">
+            <ul class="list-group">
+              <li class="list-group-item">
+                <button class="menu-item-left">
+                  <span class="glyphicon glyphicon-triangle-right"></span>循环神经网络RNN
+                </button>
+              </li>
+              <li class="list-group-item">
+                <button class="menu-item-left">
+                  <span class="glyphicon glyphicon-triangle-right"></span>卷积神经网络
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+</body>
+</html>

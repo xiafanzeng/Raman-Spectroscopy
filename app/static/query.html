@@ -12,73 +12,122 @@
   <script src="../static/js/bootstrap.js"></script>
   <title>query spectrum</title>
   <style>
-    body{
-      background-color: #e0e0e0;
+     body{
+      font-family: "Microsoft YaHei", Arial, sans-serif;
     }
-    .page-header{
-      margin-top: 15px;
-      /*background-color: #337ab7;*/
+     .page-header{
+      margin-bottom: 10px;
     }
+     h1 {
+       padding-left: 10px;
+       color: #b6bb99;
+        font-size: 46px;
+      }
+     h1 span{
+       color: #0868a3;
+     }
+     h1 small{
+       color: #747474;
+     }
+
+    .clearfix::after,.clearfix::before{
+      content: '';
+      display: table;
+      clear: both;
+    }
+    .navbar-nav li a{
+      margin: auto 50px;
+      font-size: 16px;
+    }
+    .navbar-default .navbar-nav>li>a {
+    color: #fff;
+}
+    .navbar-nav li:hover{
+      background-color: darkgray;
+    }
+    .navbar-default{
+      background-color: #337ab7;
+    }
+
+
     .glyphicon-search{
-      font-size: 40px;
+      font-size: 20px;
 
     }
     p{
       font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
       font-size: 20px;
     }
-    span{
-      font-size: 50px;
-    }
-    span.sp{
-      display: inline;
-      font-size: 20px;
-      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    }
-    /*input{*/
-    /*  margin-left: 10px;*/
 
-    /*}*/
-    .btn{
-      margin-bottom: 10px;
-    }
+
     .glyphicon-trash, .glyphicon-refresh,.glyphicon-save{
       font-size: 20px;
 
     }
-    #infoshow{
-      width: 100%;
-      height: auto;
-
-      border:1px white solid;
-
+    #delete-btn{
+      float: right;
     }
+    #update-btn{
+     margin: auto 13px;
+    }
+    .dropdown-menu {
+
+    min-width: 300px;
+}
+    .dropdown-toggle{
+       margin: auto 4px;
+      font-size: 15px;
+    }
+
 
   </style>
 </head>
 <body>
+<!--页面头部-->
+<div class="page-header">
+  <h1 ><span >Sit</span>Raman System <small>上海应用技术大学拉曼光谱分析系统</small></h1>
+</div>
+<!--导航栏-->
+<nav class="navbar navbar-default">
+  <div class="container-fluid first div">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/" style=" color: white;margin-left: 30px">首页</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="meta"><a  href="../static/create.html" >上传光谱数据 </a></li>
+        <li class="meta"><a href="../static/query.html" >查询光谱信息</a></li>
+        <li class="meta"><a href="../static/classification.html" >光谱数据分类</a></li>
+        <li class="dropdown meta">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" >了解更多关于拉曼光谱<span class="caret"></span></a>
+          <ul class="dropdown-menu" style="background-color: #337ab7">
+            <li ><a href="#">拉曼光谱原理</a></li>
+            <li ><a href="#">拉曼光谱应用</a></li>
+            <li><a href="#">Something else here</a></li>
+
+          </ul>
+        </li>
+        <li class="meta"><a href="../static/contact.html" >联系我们</a></li>
+
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
 
 <div class="container">
-  <div class="page-header">
-    <span>光谱信息查询 </span> <span class="glyphicon glyphicon-search"></span>
-  </div>
-
-  <!--  query spectrum-->
-
-<!--    <input type="text" placeholder="name\id\cas">-->
-<!--    <button type="submit" class="btn btn-primary" id="retrieve-btn">-->
-<!--      提交-->
-<!--    </button>-->
   <div class="row">
-    <div class="col-md-6">
-<!--      <span class="sp"><b>请输入光谱名字\光谱id\CAS编号:</b></span>-->
-<!--      <div class="input-group">-->
-<!--        <input type="text" class="form-control" placeholder="Please enter spectrum name \  spectrum ID  \ CAS number">-->
-<!--        <span class="input-group-btn">-->
-<!--        <button class="btn btn-default" type="button">Go!</button><br>-->
-<!--      </span>-->
-<!--      </div>&lt;!&ndash; /input-group &ndash;&gt;-->
-      <p><b>请选择查询方式：</b></p>
+    <div class="col-md-12">
+      <p><b>请选择查询方式  <span class="glyphicon glyphicon-search"></span>：</b></p>
+
       <div class="query_data">
         <form name='query' method="post" action="/spectrum/query">
           <!--                <input type="text" name = "query_sort" placeholder="id/CAS/name">-->
@@ -92,24 +141,24 @@
           <button type="submit" class="btn-primary btn btn-primary">查询</button>
         </form>
 
-      </div>
-    </div><!-- /.col-lg-6 -->
-    <div class="col-md-12">
-      <p><b>查询信息如下:</b></p>
-      <div id="infoshow" class="page-wrapper" style="text-align: right">
+        <div id="infoshow" class="page-wrapper" style="text-align: right" >
        <a  style="margin-left: 4px" name="downloadbtn" class="btn btn-primary pull-right" href="downloadfile">下载此光谱数据
        <span class="glyphicon glyphicon-save"></span>
        </a>
-        <!--<button type="submit" name="downloadbtn" class="btn btn-success pull-right" href="downloadfile">-->
-        <!--下载该光谱数据 <span class="glyphicon glyphicon-refresh"></span>-->
-         <!--</button>-->
-        <button type="submit" class="btn btn-primary" id="delete-btn">
+        <button type="submit" class="btn btn-primary" id="delete-btn" style="float:right;">
         删除此光谱数据 <span class="glyphicon glyphicon-trash"></span>
         </button>
-        <input type="file" class="btn btn-primary" id="file-loader" multiple style="float:right; margin-left: 4px">
+        <div class="btn-group">
+  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    更新此光谱 <span class=" glyphicon glyphicon-refresh "></span>
+  </button>
+  <ul class="dropdown-menu">
+      <input type="file" class="btn " id="file-loader" multiple style="float:right; margin-left: 4px">
          <button type="submit" class="btn btn-primary" id="update-btn">
-        选择文件更新此光谱数据 <span class="glyphicon glyphicon-refresh"></span>
+        点击更新
          </button>
+  </ul>
+        </div>
 
       <iframe src="../static/check.html" name="i" id="urlIframe" width="100%" height="100%"
           frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
@@ -118,19 +167,68 @@
       </iframe>
 
 </div>
+
+
       </div>
+
+    </div><!-- /.col-lg-6 -->
+    <!--<div class="col-md-12">-->
+      <!--<p><b>查询信息如下:</b></p>-->
+      <!--<div id="infoshow" class="page-wrapper" style="text-align: right">-->
+       <!--<a  style="margin-left: 4px" name="downloadbtn" class="btn btn-primary pull-right" href="downloadfile">下载此光谱数据-->
+       <!--<span class="glyphicon glyphicon-save"></span>-->
+       <!--</a>-->
+        <!--<button type="submit" class="btn btn-primary" id="delete-btn">-->
+        <!--删除此光谱数据 <span class="glyphicon glyphicon-trash"></span>-->
+        <!--</button>-->
+        <!--<input type="file" class="btn " id="file-loader" multiple style="float:right; margin-left: 4px">-->
+         <!--<button type="submit" class="btn btn-primary" id="update-btn">-->
+        <!--选择文件更新此光谱数据 <span class="glyphicon glyphicon-refresh"> :</span>-->
+         <!--</button>-->
+
+      <!--<iframe src="../static/check.html" name="i" id="urlIframe" width="100%" height="100%"-->
+          <!--frameborder="0" scrolling="no" marginheight="0" marginwidth="0"-->
+          <!--onload="reinitIframe()">-->
+
+      <!--</iframe>-->
+
+<!--</div>-->
+      <!--</div>-->
+
+
+    <!--<div class="col-md-12" >-->
+      <!--<div id="infoshow" class="page-wrapper" style="text-align: right">-->
+       <!--<a  style="margin-left: 4px" name="downloadbtn" class="btn btn-primary pull-right" href="downloadfile">下载此光谱数据-->
+       <!--<span class="glyphicon glyphicon-save"></span>-->
+       <!--</a>-->
+        <!--<button type="submit" class="btn btn-primary" id="delete-btn">-->
+        <!--删除此光谱数据 <span class="glyphicon glyphicon-trash"></span>-->
+        <!--</button>-->
+        <!--<div class="btn-group">-->
+  <!--<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+    <!--更新此光谱 <span class=" glyphicon glyphicon-refresh "></span>-->
+  <!--</button>-->
+  <!--<ul class="dropdown-menu">-->
+      <!--<input type="file" class="btn " id="file-loader" multiple style="float:right; margin-left: 4px">-->
+         <!--<button type="submit" class="btn btn-primary" id="update-btn">-->
+        <!--点击更新-->
+         <!--</button>-->
+  <!--</ul>-->
+        <!--</div>-->
+
+      <!--<iframe src="../static/check.html" name="i" id="urlIframe" width="100%" height="100%"-->
+          <!--frameborder="0" scrolling="no" marginheight="0" marginwidth="0"-->
+          <!--onload="reinitIframe()">-->
+
+      <!--</iframe>-->
+
+<!--</div>-->
+      <!--</div>-->
+
 
   </div><!-- /.row -->
 
 </div>
-<!--<div class="page-wrapper">-->
-
-  <!--<iframe src="check.html" name="i" id="urlIframe" width="100%" height="100%"-->
-          <!--frameborder="0" scrolling="no" marginheight="0" marginwidth="0"-->
-          <!--onload="reinitIframe()"></iframe>-->
-
-<!--</div>-->
-
 <script>
   var spectrums = [];
   var fileLoader = document.getElementById("file-loader");

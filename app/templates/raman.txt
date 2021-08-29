@@ -1,6 +1,6 @@
 name Esperite
-cas None
-id 13
+cas 12
+id 12
 Raman_shift Intensity
 152.3164 0
 152.7985 0.174194
