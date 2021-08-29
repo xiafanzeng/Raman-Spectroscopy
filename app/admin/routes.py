@@ -382,7 +382,7 @@ def delete_one_spectrum():
         if (a!="id"):
             continue
         else:
-            temp_id = int(b)
+            temp_id = b
             break
 
     exist_spectrum = Spectrum.query.get(temp_id)

@@ -126,13 +126,13 @@
       }
 
       else {
-        let isDigit = x => /^\d+$/g.test(x.trim())
+        // let isDigit = x => /^\d+$/g.test(x.trim())
 
         for (let sep of [' ', ',']) {
-          let xy = line.split(sep)
-          if (xy.length != 2) continue
-          if (isDigit(xy[0]) || isDigit(xy[1])) continue
-          x.push(+xy[0].trim())
+          let xy = line.split(sep);
+          if (xy.length != 2) continue;
+          // if (isDigit(xy[0]) || isDigit(xy[1])) continue;
+          x.push(+xy[0].trim());
           y.push(+xy[1].trim())
         }
         res.data = { x, y }
